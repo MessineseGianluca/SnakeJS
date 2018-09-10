@@ -1,5 +1,7 @@
 let snake;
 let food;
+let isLoop = true;
+
 
 function setup() {
   createCanvas(screenWidth, screenHeight);
@@ -18,6 +20,14 @@ function draw() {
 }
 
 function keyPressed() {
+  if(isLoop) {
+    keyPressedWhileLoop(keyCode);
+  } else {
+    keyPressedWhileNoLoop(keyCode);
+  }
+}
+
+function keyPressedWhileLoop(keyCode) {
   if(keyCode === UP_ARROW) {
     snake.changeSnakeDirection(0, -1);
   } else if(keyCode === DOWN_ARROW) {
@@ -26,5 +36,19 @@ function keyPressed() {
     snake.changeSnakeDirection(1, 0);
   } else if(keyCode === LEFT_ARROW) {
     snake.changeSnakeDirection(-1, 0);
+  } else if(keyCode === ESCAPE) {
+    noLoop();
+    changeLoopStatus();
   }
+}
+
+function keyPressedWhileNoLoop(keyCode) {
+  if(keyCode === ESCAPE) {
+    loop();
+    changeLoopStatus();
+  }
+}
+
+function changeLoopStatus() {
+  isLoop = !isLoop;
 }
