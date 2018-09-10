@@ -1,19 +1,20 @@
 let snake;
 let food;
-const xScreen = 600;
-const yScreen = 600;
 
 function setup() {
-  createCanvas(xScreen, yScreen);
+  createCanvas(screenWidth, screenHeight);
   snake = new Snake();
-  frameRate(10);
+  food = new Food();
+  frameRate(frameR);
 }
 
 function draw() {
   background(0);
   snake.update();
   snake.show();
-  justChanged = snake.checkSnakePosition(xScreen, yScreen);
+  food.show();  
+  food.checkIfEatenAndUpdate(snake.getCoordinates());  
+  snake.checkSnakePosition(screenWidth, screenHeight);
 }
 
 function keyPressed() {

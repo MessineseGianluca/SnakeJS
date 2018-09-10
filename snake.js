@@ -1,5 +1,5 @@
 function Snake() {
-  this.dim = 20;
+  this.dim = snakeDim;
   this.x = 0;
   this.y = 0;
   this.xSpeed = 1;
@@ -30,5 +30,12 @@ function Snake() {
   this.changeSnakeDirection = function(xDir, yDir) {
     this.xSpeed = xDir;
     this.ySpeed = yDir;
+  }
+
+  this.getCoordinates = function() {
+    return { 
+      x: this.x, 
+      y: this.y 
+    };
   }
 }
