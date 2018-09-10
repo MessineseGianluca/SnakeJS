@@ -8,12 +8,6 @@ function Food() {
     rect(this.x, this.y, this.dim, this.dim);
   }
 
-  this.checkIfEatenAndUpdate = function(snakeCoordinates) {
-    if(this.isEaten(snakeCoordinates)) {
-      this.update();
-    }
-  }
-
   this.update = function() {
     this.x = getRandomPoint(screenWidth, snakeDim);
     this.y = getRandomPoint(screenHeight, snakeDim);

@@ -14,9 +14,16 @@ function draw() {
   background(0);
   snake.update();
   snake.show();
-  food.show();  
-  food.checkIfEatenAndUpdate(snake.getCoordinates());  
+  food.show();
+  checkIfEatenAndUpdate(food, snake);
   snake.checkSnakePosition(screenWidth, screenHeight);
+}
+
+function checkIfEatenAndUpdate() {
+  if(food.isEaten(snake.getCoordinates())) {
+    snake.grow();
+    food.update();
+  }
 }
 
 function keyPressed() {
@@ -29,13 +36,14 @@ function keyPressed() {
 
 function keyPressedWhileLoop(keyCode) {
   if(keyCode === UP_ARROW) {
-    snake.changeSnakeDirection(0, -1);
+    snake.goUp();
   } else if(keyCode === DOWN_ARROW) {
+    snake.goDown();
     snake.changeSnakeDirection(0, 1)
   } else if(keyCode === RIGHT_ARROW) {
-    snake.changeSnakeDirection(1, 0);
+    snake.goRight();
   } else if(keyCode === LEFT_ARROW) {
-    snake.changeSnakeDirection(-1, 0);
+    snake.goLeft();
   } else if(keyCode === ESCAPE) {
     noLoop();
     changeLoopStatus();
