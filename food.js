@@ -1,8 +1,3 @@
-function getRandomPoint(rangeEnd, scl) {
-  const randValue = Math.floor((Math.random() * rangeEnd));
-  return randValue - (randValue % scl);
-}
-
 function Food() {
   this.x = getRandomPoint(screenWidth, snakeDim);
   this.y = getRandomPoint(screenHeight, snakeDim);
