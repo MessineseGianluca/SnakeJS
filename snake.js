@@ -86,6 +86,23 @@ function Snake() {
     return this.xSpeed === -1 && this.ySpeed === 0;
   }
 
+  this.biteItself = function() {
+    let flag = false;
+    let i = 0;
+    while(i < this.snakeBlocks.length && !flag) {
+      let j = i + 1;
+      while(j < this.snakeBlocks.length && !flag) {
+        if(this.snakeBlocks[i].x === this.snakeBlocks[j].x && 
+           this.snakeBlocks[i].y === this.snakeBlocks[j].y) {
+          flag = false;
+        }
+        j++;
+      }
+      i++;
+    }
+    return flag;
+  }
+
   this.changeSnakeDirection = function(xDir, yDir) {
     this.xSpeed = xDir;
     this.ySpeed = yDir;

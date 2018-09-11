@@ -16,6 +16,9 @@ function draw() {
   snake.show();
   food.show();
   checkIfEatenAndUpdate(food, snake);
+  if(snake.biteItself()) {
+    endGame();
+  }
   snake.checkSnakePosition(screenWidth, screenHeight);
 }
 
@@ -59,4 +62,8 @@ function keyPressedWhileNoLoop(keyCode) {
 
 function changeLoopStatus() {
   isLoop = !isLoop;
+}
+
+function endGame() {
+  noLoop();
 }
