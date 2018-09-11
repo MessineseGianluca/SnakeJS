@@ -16,7 +16,7 @@ function Snake() {
     this.snakeBlocks[0].x += this.xSpeed * this.dim;
     this.snakeBlocks[0].y += this.ySpeed * this.dim;
 
-    for(let i = 1; i < this.snakeBlocks.length; i++ ) {
+    for(let i = 1; i < this.snakeBlocks.length; i++) {
       let swapX = this.snakeBlocks[i].x;
       let swapY = this.snakeBlocks[i].y;
       this.snakeBlocks[i].x = tempCoordinates.x;
@@ -68,6 +68,22 @@ function Snake() {
 
   this.goLeft = function() {
     this.changeSnakeDirection(-1, 0);
+  }
+
+  this.isGoingUp = function() {
+    return this.xSpeed === 0 && this.ySpeed === -1;
+  }
+
+  this.isGoingDown = function() {
+    return this.xSpeed === 0 && this.ySpeed === 1;
+  }
+
+  this.isGoingRight = function() {
+    return this.xSpeed === 1 && this.ySpeed === 0;
+  }
+
+  this.isGoingLeft = function() {
+    return this.xSpeed === -1 && this.ySpeed === 0;
   }
 
   this.changeSnakeDirection = function(xDir, yDir) {

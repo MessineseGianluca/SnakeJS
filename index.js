@@ -35,14 +35,14 @@ function keyPressed() {
 }
 
 function keyPressedWhileLoop(keyCode) {
-  if(keyCode === UP_ARROW) {
+  if(keyCode === UP_ARROW && !snake.isGoingDown()) {
     snake.goUp();
-  } else if(keyCode === DOWN_ARROW) {
+  } else if(keyCode === DOWN_ARROW && !snake.isGoingUp()) {
     snake.goDown();
     snake.changeSnakeDirection(0, 1)
-  } else if(keyCode === RIGHT_ARROW) {
+  } else if(keyCode === RIGHT_ARROW && !snake.isGoingLeft()) {
     snake.goRight();
-  } else if(keyCode === LEFT_ARROW) {
+  } else if(keyCode === LEFT_ARROW && !snake.isGoingRight()) {
     snake.goLeft();
   } else if(keyCode === ESCAPE) {
     noLoop();
