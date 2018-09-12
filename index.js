@@ -5,8 +5,7 @@ let isLoop = true;
 
 function setup() {
   createCanvas(screenWidth, screenHeight);
-  snake = new Snake();
-  food = new Food();
+  initializeData();
   frameRate(frameR);
 }
 
@@ -65,5 +64,11 @@ function changeLoopStatus() {
 }
 
 function endGame() {
-  noLoop();
+  snake.clearBlocks();
+  initializeData();
+}
+
+function initializeData() {
+  snake = new Snake();
+  food = new Food();
 }

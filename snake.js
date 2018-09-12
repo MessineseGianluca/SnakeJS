@@ -88,19 +88,11 @@ function Snake() {
 
   this.biteItself = function() {
     let flag = false;
-    let i = 0;
-    while(i < this.snakeBlocks.length && !flag) {
-      let j = i + 1;
-      while(j < this.snakeBlocks.length && !flag) {
-        if(this.snakeBlocks[i].x === this.snakeBlocks[j].x && 
-           this.snakeBlocks[i].y === this.snakeBlocks[j].y) {
-          flag = false;
-        }
-        j++;
-      }
-      i++;
-    }
-    return flag;
+    const head = this.getHeadBlock();
+    const snakeBlocksWithoutHead = this.snakeBlocks.slice(1);
+    return snakeBlocksWithoutHead.find(function(currentBlock) {
+      return currentBlock.x === head.x && currentBlock.y === head.y;
+    });
   }
 
   this.changeSnakeDirection = function(xDir, yDir) {
@@ -129,5 +121,9 @@ function Snake() {
     newBlock.x = coordinates.x + this.xSpeed * this.dim;
     newBlock.y = coordinates.y + this.ySpeed * this.dim;
     this.snakeBlocks.unshift(newBlock);
+  }
+
+  this.clearBlocks = function() {
+    this.snakeBlocks = [];
   }
 }
