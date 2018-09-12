@@ -1,12 +1,13 @@
 let snake;
 let food;
-let isLoop = true;
-
+let isGamePaused = true;
+let isGameLost = false;
 
 function setup() {
   createCanvas(screenWidth, screenHeight);
   initializeData();
   frameRate(frameR);
+  setFontFeatures();
 }
 
 function draw() {
@@ -15,10 +16,16 @@ function draw() {
   snake.show();
   food.show();
   checkIfEatenAndUpdate(food, snake);
-  if(snake.biteItself()) {
+  snake.checkSnakePosition(screenWidth, screenHeight);
+  if(snake.bitesItself()) {
     endGame();
   }
-  snake.checkSnakePosition(screenWidth, screenHeight);
+}
+
+function initializeData() {
+  isGameLost = false;
+  snake = new Snake();
+  food = new Food();
 }
 
 function checkIfEatenAndUpdate() {
@@ -29,14 +36,16 @@ function checkIfEatenAndUpdate() {
 }
 
 function keyPressed() {
-  if(isLoop) {
-    keyPressedWhileLoop(keyCode);
+  if(isGameLost) {
+    keyPressedWhileGameLost(keyCode);
+  } else if(isGamePaused) {
+    keyPressedWhilePaused(keyCode);
   } else {
-    keyPressedWhileNoLoop(keyCode);
+    keyPressedWhilePlaying(keyCode);
   }
 }
 
-function keyPressedWhileLoop(keyCode) {
+function keyPressedWhilePaused(keyCode) {
   if(keyCode === UP_ARROW && !snake.isGoingDown()) {
     snake.goUp();
   } else if(keyCode === DOWN_ARROW && !snake.isGoingUp()) {
@@ -48,27 +57,61 @@ function keyPressedWhileLoop(keyCode) {
     snake.goLeft();
   } else if(keyCode === ESCAPE) {
     noLoop();
-    changeLoopStatus();
+    changePauseStatus();
   }
 }
 
-function keyPressedWhileNoLoop(keyCode) {
+function keyPressedWhileGameLost(keyCode) {
+  let spaceBarCode = 32;
+  if(keyCode === spaceBarCode) {
+    restartGame();
+  }
+}
+
+function keyPressedWhilePlaying(keyCode) {
   if(keyCode === ESCAPE) {
     loop();
-    changeLoopStatus();
+    changePauseStatus();
   }
 }
 
-function changeLoopStatus() {
-  isLoop = !isLoop;
+function changePauseStatus() {
+  isGamePaused = !isGamePaused;
+}
+
+function restartGame() {
+  initializeData();
+  loop();
 }
 
 function endGame() {
+  isGameLost = true;
   snake.clearBlocks();
-  initializeData();
+
+  printCustomText(
+    screenWidth * 0.1,
+    255,
+    'Game Lost',
+    screenWidth * 0.5,
+    screenHeight * 0.4,
+  );
+  printCustomText(
+    screenWidth * 0.03,
+    255,
+    'Press space-bar to restart',
+    screenWidth * 0.5,
+    screenHeight * 0.5,
+  );
+
+  noLoop();
 }
 
-function initializeData() {
-  snake = new Snake();
-  food = new Food();
+function setFontFeatures() {
+  textAlign(CENTER, CENTER);
+}
+
+function printCustomText(fontSize, color, sentence, x, y) {
+  textSize(fontSize);
+  fill(color);
+  text(sentence, x, y);
 }

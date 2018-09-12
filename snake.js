@@ -28,7 +28,7 @@ function Snake() {
 
   this.show = function() {
     this.snakeBlocks.forEach(block => {
-      fill(255);
+      fill(0, 255, 0);
       rect(block.x, block.y, this.dim, this.dim);
     });
   }
@@ -86,7 +86,7 @@ function Snake() {
     return this.xSpeed === -1 && this.ySpeed === 0;
   }
 
-  this.biteItself = function() {
+  this.bitesItself = function() {
     let flag = false;
     const head = this.getHeadBlock();
     const snakeBlocksWithoutHead = this.snakeBlocks.slice(1);
