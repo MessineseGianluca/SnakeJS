@@ -1,16 +1,19 @@
-function Food() {
-  this.x = getRandomPoint(screenWidth, snakeDim);
-  this.y = getRandomPoint(screenHeight, snakeDim);
-  this.dim = snakeDim;
+const { getRandomPoint } = require('./util');
+const { screenWidth, screenHeight, cellDimension } = require('./config');
 
-  this.show = function() {
-    fill(255, 0, 0); // red color 
-    rect(this.x, this.y, this.dim, this.dim);
+function Food() {
+  this.x = getRandomPoint(screenWidth, cellDimension);
+  this.y = getRandomPoint(screenHeight, cellDimension);
+  this.dim = cellDimension;
+
+  this.show = function(p5) {
+    p5.fill(255, 0, 0); // red color 
+    p5.rect(this.x, this.y, this.dim, this.dim);
   }
 
   this.update = function() {
-    this.x = getRandomPoint(screenWidth, snakeDim);
-    this.y = getRandomPoint(screenHeight, snakeDim);
+    this.x = getRandomPoint(screenWidth, cellDimension);
+    this.y = getRandomPoint(screenHeight, cellDimension);
   }
 
   this.isEaten = function(snakeCoordinates) {
@@ -18,3 +21,7 @@ function Food() {
     return eaten;
   }
 }
+
+module.exports = {
+  Food,
+};

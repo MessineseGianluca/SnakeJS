@@ -1,26 +1,46 @@
+import * as p5 from 'p5/lib/p5.min';
+
+const { screenWidth, screenHeight, frameR } = require('./config');
+const { Snake } = require('./snake');
+const { Food } = require('./food');
+
 let snake;
 let food;
 let isGamePaused = true;
 let isGameLost = false;
 
-function setup() {
-  createCanvas(screenWidth, screenHeight);
-  initializeData();
-  frameRate(frameR);
-}
+let sketch = (s) => {
+  s.setup = () => {
+    s.createCanvas(screenWidth, screenHeight);
+    initializeData();
+    s.frameRate(frameR);
+  }
 
-function draw() {
-  background(0);
-  snake.update();
-  snake.show();
-  food.show();
-  showScorePanel(snake.getLength());
-  checkIfEatenAndUpdate(food, snake);
-  snake.checkSnakePosition(screenWidth, screenHeight);
-  if(snake.bitesItself()) {
-    endGame();
+  s.draw = () => {
+    s.background(0);
+    snake.update();
+    snake.show(s);
+    food.show(s);
+    showScorePanel(snake.getLength());
+    checkIfEatenAndUpdate(food, snake);
+    snake.checkSnakePosition(screenWidth, screenHeight);
+    if(snake.bitesItself()) {
+      endGame();
+    }
+  }
+
+  s.keyPressed = () => {
+    if(isGameLost) {
+      keyPressedWhileGameLost(P5.keyCode);
+    } else if(isGamePaused) {
+      keyPressedWhilePaused(P5.keyCode);
+    } else {
+      keyPressedWhilePlaying(P5.keyCode);
+    }
   }
 }
+
+const P5 = new p5(sketch); 
 
 function initializeData() {
   isGameLost = false;
@@ -35,28 +55,18 @@ function checkIfEatenAndUpdate() {
   }
 }
 
-function keyPressed() {
-  if(isGameLost) {
-    keyPressedWhileGameLost(keyCode);
-  } else if(isGamePaused) {
-    keyPressedWhilePaused(keyCode);
-  } else {
-    keyPressedWhilePlaying(keyCode);
-  }
-}
-
 function keyPressedWhilePaused(keyCode) {
-  if(keyCode === UP_ARROW && !snake.isGoingDown()) {
+  if(keyCode === P5.UP_ARROW && !snake.isGoingDown()) {
     snake.goUp();
-  } else if(keyCode === DOWN_ARROW && !snake.isGoingUp()) {
+  } else if(keyCode === P5.DOWN_ARROW && !snake.isGoingUp()) {
     snake.goDown();
     snake.changeSnakeDirection(0, 1)
-  } else if(keyCode === RIGHT_ARROW && !snake.isGoingLeft()) {
+  } else if(keyCode === P5.RIGHT_ARROW && !snake.isGoingLeft()) {
     snake.goRight();
-  } else if(keyCode === LEFT_ARROW && !snake.isGoingRight()) {
+  } else if(keyCode === P5.LEFT_ARROW && !snake.isGoingRight()) {
     snake.goLeft();
-  } else if(keyCode === ESCAPE) {
-    noLoop();
+  } else if(keyCode === P5.ESCAPE) {
+    P5.noLoop();
     changePauseStatus();
   }
 }
@@ -69,8 +79,8 @@ function keyPressedWhileGameLost(keyCode) {
 }
 
 function keyPressedWhilePlaying(keyCode) {
-  if(keyCode === ESCAPE) {
-    loop();
+  if(keyCode === P5.ESCAPE) {
+    P5.loop();
     changePauseStatus();
   }
 }
@@ -81,14 +91,14 @@ function changePauseStatus() {
 
 function restartGame() {
   initializeData();
-  loop();
+  P5.loop();
 }
 
 function endGame() {
   isGameLost = true;
   snake.clearBlocks();
 
-  textAlign(CENTER, CENTER);
+  P5.textAlign(P5.CENTER, P5.CENTER);
   printCustomText(
     screenWidth * 0.1,
     255,
@@ -104,17 +114,17 @@ function endGame() {
     screenHeight * 0.5,
   );
 
-  noLoop();
+  P5.noLoop();
 }
 
 function printCustomText(fontSize, color, sentence, x, y) {
-  textSize(fontSize);
-  fill(color);
-  text(sentence, x, y);
+  P5.textSize(fontSize);
+  P5.fill(color);
+  P5.text(sentence, x, y);
 }
 
 function showScorePanel(score) {
-  textAlign(LEFT, CENTER);
+  P5.textAlign(P5.LEFT, P5.CENTER);
   const scoreText = 'score: ';
   printCustomText(
     screenWidth * 0.05,
