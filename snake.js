@@ -126,4 +126,8 @@ function Snake() {
   this.clearBlocks = function() {
     this.snakeBlocks = [];
   }
+
+  this.getLength = function() {
+    return this.snakeBlocks.length;
+  }
 }

@@ -7,7 +7,6 @@ function setup() {
   createCanvas(screenWidth, screenHeight);
   initializeData();
   frameRate(frameR);
-  setFontFeatures();
 }
 
 function draw() {
@@ -15,6 +14,7 @@ function draw() {
   snake.update();
   snake.show();
   food.show();
+  showScorePanel(snake.getLength());
   checkIfEatenAndUpdate(food, snake);
   snake.checkSnakePosition(screenWidth, screenHeight);
   if(snake.bitesItself()) {
@@ -88,6 +88,7 @@ function endGame() {
   isGameLost = true;
   snake.clearBlocks();
 
+  textAlign(CENTER, CENTER);
   printCustomText(
     screenWidth * 0.1,
     255,
@@ -106,12 +107,20 @@ function endGame() {
   noLoop();
 }
 
-function setFontFeatures() {
-  textAlign(CENTER, CENTER);
-}
-
 function printCustomText(fontSize, color, sentence, x, y) {
   textSize(fontSize);
   fill(color);
   text(sentence, x, y);
+}
+
+function showScorePanel(score) {
+  textAlign(LEFT, CENTER);
+  const scoreText = 'score: ';
+  printCustomText(
+    screenWidth * 0.05,
+    255,
+    scoreText.concat(score),
+    screenWidth * 0.01,
+    screenHeight * 0.02,
+  );
 }
