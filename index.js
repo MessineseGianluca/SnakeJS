@@ -3,6 +3,7 @@ import * as p5 from 'p5/lib/p5.min';
 const { screenWidth, screenHeight, frameR } = require('./config');
 const { Snake } = require('./snake/snake');
 const { Food } = require('./food/food');
+const { checkIfEatenAndUpdate, checkSnakePosition, printCustomText } = require('./game_logic');
 
 let snake;
 let food;
@@ -12,8 +13,8 @@ let isGameLost = false;
 const sketch = (s) => {
   s.setup = () => {
     s.createCanvas(screenWidth, screenHeight);
-    initializeData();
     s.frameRate(frameR);
+    initializeData();
   }
 
   s.draw = () => {
@@ -22,8 +23,8 @@ const sketch = (s) => {
     snake.show(s);
     food.show(s);
     showScorePanel(snake.getLength());
-    checkIfEatenAndUpdate(food, snake);
-    snake.checkSnakePosition(screenWidth, screenHeight);
+    checkSnakePosition(snake);
+    checkIfEatenAndUpdate(snake, food);
     if(snake.bitesItself()) {
       endGame();
     }
@@ -46,13 +47,6 @@ function initializeData() {
   isGameLost = false;
   snake = new Snake();
   food = new Food();
-}
-
-function checkIfEatenAndUpdate() {
-  if(food.isEaten(snake.getCoordinates())) {
-    snake.grow();
-    food.update();
-  }
 }
 
 function keyPressedWhilePlaying(keyCode) {
@@ -105,6 +99,7 @@ function endGame() {
     'Game Lost',
     screenWidth * 0.5,
     screenHeight * 0.4,
+    P5,
   );
   printCustomText(
     screenWidth * 0.03,
@@ -112,15 +107,10 @@ function endGame() {
     'Press space-bar to restart',
     screenWidth * 0.5,
     screenHeight * 0.5,
+    P5,
   );
 
   P5.noLoop();
-}
-
-function printCustomText(fontSize, color, sentence, x, y) {
-  P5.textSize(fontSize);
-  P5.fill(color);
-  P5.text(sentence, x, y);
 }
 
 function showScorePanel(score) {
@@ -132,5 +122,6 @@ function showScorePanel(score) {
     scoreText.concat(score),
     screenWidth * 0.01,
     screenHeight * 0.02,
+    P5,
   );
 }

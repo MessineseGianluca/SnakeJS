@@ -31,19 +31,6 @@ function Snake() {
     });
   }
 
-  this.checkSnakePosition = function(xScreen, yScreen) {
-    const head = this.getHeadBlock();
-    if(head.x >= xScreen) {
-      this.changeHeadXCoordinate(0);
-    } else if(head.x < 0) {
-      this.changeHeadXCoordinate(xScreen - this.dim);
-    } else if(head.y >= yScreen) {
-      this.changeHeadYCoordinate(0);
-    } else if(head.y < 0) {
-      this.changeHeadYCoordinate(yScreen - this.dim);
-    }
-  }
-
   this.changeHeadXCoordinate = function(x) {
     this.snakeBlocks[0].x = x;
   }
