@@ -6,7 +6,7 @@ const { Food } = require('./food/food');
 
 let snake;
 let food;
-let isGamePaused = true;
+let isGamePaused = false;
 let isGameLost = false;
 
 const sketch = (s) => {
@@ -55,7 +55,7 @@ function checkIfEatenAndUpdate() {
   }
 }
 
-function keyPressedWhilePaused(keyCode) {
+function keyPressedWhilePlaying(keyCode) {
   if(keyCode === P5.UP_ARROW && !snake.isGoingDown()) {
     snake.goUp();
   } else if(keyCode === P5.DOWN_ARROW && !snake.isGoingUp()) {
@@ -78,7 +78,7 @@ function keyPressedWhileGameLost(keyCode) {
   }
 }
 
-function keyPressedWhilePlaying(keyCode) {
+function keyPressedWhilePaused(keyCode) {
   if(keyCode === P5.ESCAPE) {
     P5.loop();
     changePauseStatus();
