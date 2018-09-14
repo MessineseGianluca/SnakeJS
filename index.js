@@ -1,15 +1,15 @@
 import * as p5 from 'p5/lib/p5.min';
 
 const { screenWidth, screenHeight, frameR } = require('./config');
-const { Snake } = require('./snake');
-const { Food } = require('./food');
+const { Snake } = require('./snake/snake');
+const { Food } = require('./food/food');
 
 let snake;
 let food;
 let isGamePaused = true;
 let isGameLost = false;
 
-let sketch = (s) => {
+const sketch = (s) => {
   s.setup = () => {
     s.createCanvas(screenWidth, screenHeight);
     initializeData();

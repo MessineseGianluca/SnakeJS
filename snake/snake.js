@@ -1,9 +1,5 @@
-const { cellDimension } = require('./config');
-
-function snakeBlock() {
-  this.x = 0;
-  this.y = 0;
-}
+const { cellDimension } = require('../config');
+const { snakeBlock } = require('./snake_block');
 
 function Snake() {
   this.dim = cellDimension;

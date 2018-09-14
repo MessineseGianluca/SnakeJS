@@ -1,5 +1,5 @@
-const { getRandomPoint } = require('./util');
-const { screenWidth, screenHeight, cellDimension } = require('./config');
+const { getRandomPoint } = require('../util/util');
+const { screenWidth, screenHeight, cellDimension } = require('../config');
 
 function Food() {
   this.x = getRandomPoint(screenWidth, cellDimension);
