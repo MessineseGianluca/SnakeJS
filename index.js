@@ -1,9 +1,13 @@
-import * as p5 from 'p5/lib/p5.min';
-
 const { screenWidth, screenHeight, frameR } = require('./config');
 const { Snake } = require('./snake/snake');
 const { Food } = require('./food/food');
-const { checkIfEatenAndUpdate, checkSnakePosition, printCustomText } = require('./game_logic');
+const { 
+  checkIfEatenAndUpdate, 
+  checkSnakePosition, 
+  printCustomText 
+} = require('./game_logic');
+
+import { game_graphic, initGameGraphic } from './graphic';
 
 let snake;
 let food;
@@ -32,16 +36,16 @@ const sketch = (s) => {
 
   s.keyPressed = () => {
     if(isGameLost) {
-      keyPressedWhileGameLost(P5.keyCode);
+      keyPressedWhileGameLost(s.keyCode);
     } else if(isGamePaused) {
-      keyPressedWhilePaused(P5.keyCode);
+      keyPressedWhilePaused(s.keyCode);
     } else {
-      keyPressedWhilePlaying(P5.keyCode);
+      keyPressedWhilePlaying(s.keyCode);
     }
   }
 }
 
-const P5 = new p5(sketch); 
+initGameGraphic(sketch);
 
 function initializeData() {
   isGameLost = false;
@@ -50,17 +54,17 @@ function initializeData() {
 }
 
 function keyPressedWhilePlaying(keyCode) {
-  if(keyCode === P5.UP_ARROW && !snake.isGoingDown()) {
+  if(keyCode === game_graphic.UP_ARROW && !snake.isGoingDown()) {
     snake.goUp();
-  } else if(keyCode === P5.DOWN_ARROW && !snake.isGoingUp()) {
+  } else if(keyCode === game_graphic.DOWN_ARROW && !snake.isGoingUp()) {
     snake.goDown();
     snake.changeSnakeDirection(0, 1)
-  } else if(keyCode === P5.RIGHT_ARROW && !snake.isGoingLeft()) {
+  } else if(keyCode === game_graphic.RIGHT_ARROW && !snake.isGoingLeft()) {
     snake.goRight();
-  } else if(keyCode === P5.LEFT_ARROW && !snake.isGoingRight()) {
+  } else if(keyCode === game_graphic.LEFT_ARROW && !snake.isGoingRight()) {
     snake.goLeft();
-  } else if(keyCode === P5.ESCAPE) {
-    P5.noLoop();
+  } else if(keyCode === game_graphic.ESCAPE) {
+    game_graphic.noLoop();
     changePauseStatus();
   }
 }
@@ -73,8 +77,8 @@ function keyPressedWhileGameLost(keyCode) {
 }
 
 function keyPressedWhilePaused(keyCode) {
-  if(keyCode === P5.ESCAPE) {
-    P5.loop();
+  if(keyCode === game_graphic.ESCAPE) {
+    game_graphic.loop();
     changePauseStatus();
   }
 }
@@ -85,21 +89,21 @@ function changePauseStatus() {
 
 function restartGame() {
   initializeData();
-  P5.loop();
+  game_graphic.loop();
 }
 
 function endGame() {
   isGameLost = true;
   snake.clearBlocks();
 
-  P5.textAlign(P5.CENTER, P5.CENTER);
+  game_graphic.textAlign(game_graphic.CENTER, game_graphic.CENTER);
   printCustomText(
     screenWidth * 0.1,
     255,
     'Game Lost',
     screenWidth * 0.5,
     screenHeight * 0.4,
-    P5,
+    game_graphic,
   );
   printCustomText(
     screenWidth * 0.03,
@@ -107,14 +111,14 @@ function endGame() {
     'Press space-bar to restart',
     screenWidth * 0.5,
     screenHeight * 0.5,
-    P5,
+    game_graphic,
   );
 
-  P5.noLoop();
+  game_graphic.noLoop();
 }
 
 function showScorePanel(score) {
-  P5.textAlign(P5.LEFT, P5.CENTER);
+  game_graphic.textAlign(game_graphic.LEFT, game_graphic.CENTER);
   const scoreText = 'score: ';
   printCustomText(
     screenWidth * 0.05,
@@ -122,6 +126,6 @@ function showScorePanel(score) {
     scoreText.concat(score),
     screenWidth * 0.01,
     screenHeight * 0.02,
-    P5,
+    game_graphic,
   );
 }
