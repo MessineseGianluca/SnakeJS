@@ -1,26 +1,47 @@
+import * as p5 from 'p5/lib/p5.min';
+
+const { screenWidth, screenHeight, frameR } = require('./config');
+const { Snake } = require('./snake/snake');
+const { Food } = require('./food/food');
+const { checkIfEatenAndUpdate, checkSnakePosition, printCustomText } = require('./game_logic');
+
 let snake;
 let food;
-let isGamePaused = true;
+let isGamePaused = false;
 let isGameLost = false;
 
-function setup() {
-  createCanvas(screenWidth, screenHeight);
-  initializeData();
-  frameRate(frameR);
-}
+const sketch = (s) => {
+  s.setup = () => {
+    s.createCanvas(screenWidth, screenHeight);
+    s.frameRate(frameR);
+    initializeData();
+  }
 
-function draw() {
-  background(0);
-  snake.update();
-  snake.show();
-  food.show();
-  showScorePanel(snake.getLength());
-  checkIfEatenAndUpdate(food, snake);
-  snake.checkSnakePosition(screenWidth, screenHeight);
-  if(snake.bitesItself()) {
-    endGame();
+  s.draw = () => {
+    s.background(0);
+    snake.update();
+    snake.show(s);
+    food.show(s);
+    showScorePanel(snake.getLength());
+    checkSnakePosition(snake);
+    checkIfEatenAndUpdate(snake, food);
+    if(snake.bitesItself()) {
+      endGame();
+    }
+  }
+
+  s.keyPressed = () => {
+    if(isGameLost) {
+      keyPressedWhileGameLost(P5.keyCode);
+    } else if(isGamePaused) {
+      keyPressedWhilePaused(P5.keyCode);
+    } else {
+      keyPressedWhilePlaying(P5.keyCode);
+    }
   }
 }
+
+const P5 = new p5(sketch); 
 
 function initializeData() {
   isGameLost = false;
@@ -28,35 +49,18 @@ function initializeData() {
   food = new Food();
 }
 
-function checkIfEatenAndUpdate() {
-  if(food.isEaten(snake.getCoordinates())) {
-    snake.grow();
-    food.update();
-  }
-}
-
-function keyPressed() {
-  if(isGameLost) {
-    keyPressedWhileGameLost(keyCode);
-  } else if(isGamePaused) {
-    keyPressedWhilePaused(keyCode);
-  } else {
-    keyPressedWhilePlaying(keyCode);
-  }
-}
-
-function keyPressedWhilePaused(keyCode) {
-  if(keyCode === UP_ARROW && !snake.isGoingDown()) {
+function keyPressedWhilePlaying(keyCode) {
+  if(keyCode === P5.UP_ARROW && !snake.isGoingDown()) {
     snake.goUp();
-  } else if(keyCode === DOWN_ARROW && !snake.isGoingUp()) {
+  } else if(keyCode === P5.DOWN_ARROW && !snake.isGoingUp()) {
     snake.goDown();
     snake.changeSnakeDirection(0, 1)
-  } else if(keyCode === RIGHT_ARROW && !snake.isGoingLeft()) {
+  } else if(keyCode === P5.RIGHT_ARROW && !snake.isGoingLeft()) {
     snake.goRight();
-  } else if(keyCode === LEFT_ARROW && !snake.isGoingRight()) {
+  } else if(keyCode === P5.LEFT_ARROW && !snake.isGoingRight()) {
     snake.goLeft();
-  } else if(keyCode === ESCAPE) {
-    noLoop();
+  } else if(keyCode === P5.ESCAPE) {
+    P5.noLoop();
     changePauseStatus();
   }
 }
@@ -68,9 +72,9 @@ function keyPressedWhileGameLost(keyCode) {
   }
 }
 
-function keyPressedWhilePlaying(keyCode) {
-  if(keyCode === ESCAPE) {
-    loop();
+function keyPressedWhilePaused(keyCode) {
+  if(keyCode === P5.ESCAPE) {
+    P5.loop();
     changePauseStatus();
   }
 }
@@ -81,20 +85,21 @@ function changePauseStatus() {
 
 function restartGame() {
   initializeData();
-  loop();
+  P5.loop();
 }
 
 function endGame() {
   isGameLost = true;
   snake.clearBlocks();
 
-  textAlign(CENTER, CENTER);
+  P5.textAlign(P5.CENTER, P5.CENTER);
   printCustomText(
     screenWidth * 0.1,
     255,
     'Game Lost',
     screenWidth * 0.5,
     screenHeight * 0.4,
+    P5,
   );
   printCustomText(
     screenWidth * 0.03,
@@ -102,19 +107,14 @@ function endGame() {
     'Press space-bar to restart',
     screenWidth * 0.5,
     screenHeight * 0.5,
+    P5,
   );
 
-  noLoop();
-}
-
-function printCustomText(fontSize, color, sentence, x, y) {
-  textSize(fontSize);
-  fill(color);
-  text(sentence, x, y);
+  P5.noLoop();
 }
 
 function showScorePanel(score) {
-  textAlign(LEFT, CENTER);
+  P5.textAlign(P5.LEFT, P5.CENTER);
   const scoreText = 'score: ';
   printCustomText(
     screenWidth * 0.05,
@@ -122,5 +122,6 @@ function showScorePanel(score) {
     scoreText.concat(score),
     screenWidth * 0.01,
     screenHeight * 0.02,
+    P5,
   );
 }

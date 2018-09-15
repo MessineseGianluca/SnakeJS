@@ -1,10 +1,8 @@
-function snakeBlock() {
-  this.x = 0;
-  this.y = 0;
-}
+const { cellDimension } = require('../config');
+const { snakeBlock } = require('./snake_block');
 
 function Snake() {
-  this.dim = snakeDim;
+  this.dim = cellDimension;
   this.xSpeed = 1;
   this.ySpeed = 0;
   
@@ -26,24 +24,11 @@ function Snake() {
     }
   }
 
-  this.show = function() {
+  this.show = function(p5) {
     this.snakeBlocks.forEach(block => {
-      fill(0, 255, 0);
-      rect(block.x, block.y, this.dim, this.dim);
+      p5.fill(0, 255, 0);
+      p5.rect(block.x, block.y, this.dim, this.dim);
     });
-  }
-
-  this.checkSnakePosition = function(xScreen, yScreen) {
-    const head = this.getHeadBlock();
-    if(head.x >= xScreen) {
-      this.changeHeadXCoordinate(0);
-    } else if(head.x < 0) {
-      this.changeHeadXCoordinate(xScreen - this.dim);
-    } else if(head.y >= yScreen) {
-      this.changeHeadYCoordinate(0);
-    } else if(head.y < 0) {
-      this.changeHeadYCoordinate(yScreen - this.dim);
-    }
   }
 
   this.changeHeadXCoordinate = function(x) {
@@ -87,7 +72,6 @@ function Snake() {
   }
 
   this.bitesItself = function() {
-    let flag = false;
     const head = this.getHeadBlock();
     const snakeBlocksWithoutHead = this.snakeBlocks.slice(1);
     return snakeBlocksWithoutHead.find(function(currentBlock) {
@@ -130,4 +114,8 @@ function Snake() {
   this.getLength = function() {
     return this.snakeBlocks.length;
   }
+}
+
+module.exports = {
+  Snake,
 }
