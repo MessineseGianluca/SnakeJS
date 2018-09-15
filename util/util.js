@@ -3,6 +3,4 @@ function getRandomPoint(rangeEnd, scl) {
   return randValue - (randValue % scl);
 }
 
-module.exports = {
-  getRandomPoint,
-}
+export { getRandomPoint };

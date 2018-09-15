@@ -1,6 +1,8 @@
 import { game_graphic } from './graphic';
 import * as game from './game_status';
 import { snake } from './snake/snake';
+import { food } from './food/food';
+
 
 function keyPressedLogic() {
   if(game.lost) {
@@ -40,6 +42,7 @@ function keyPressedWhileGameLost(keyCode) {
   if(keyCode === spaceBarCode) {
     game.changeLostStatus();
     snake.init();
+    food.update();
     game_graphic.loop();
   }
 }

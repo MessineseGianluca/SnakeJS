@@ -1,4 +1,3 @@
-import { game_graphic } from '../graphic';
 import { cellDimension } from '../config';
 import { snakeBlock } from './snake_block';
 
@@ -24,13 +23,6 @@ function Snake() {
       tempCoordinates.x = swapX;
       tempCoordinates.y = swapY;
     }
-  }
-
-  this.show = function(game_graphic) {
-    this.snakeBlocks.forEach(block => {
-      game_graphic.fill(0, 255, 0);
-      game_graphic.rect(block.x, block.y, this.dim, this.dim);
-    });
   }
 
   this.changeHeadXCoordinate = function(x) {

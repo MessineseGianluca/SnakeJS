@@ -1,5 +1,8 @@
 import { game_graphic } from './graphic';
-import { screenWidth, screenHeight } from './config';
+import { screenWidth, screenHeight, cellDimension } from './config';
+import { snake } from './snake/snake';
+import { food } from './food/food';
+
 
 function printCustomText(fontSize, color, sentence, x, y) {
   game_graphic.textSize(fontSize);
@@ -20,7 +23,21 @@ function showScorePanel(score) {
   );
 }
 
+function showSnake() {
+  snake.snakeBlocks.forEach(block => {
+    game_graphic.fill(0, 255, 0);
+    game_graphic.rect(block.x, block.y, cellDimension, cellDimension);
+  });
+}
+
+function showFood() {
+  game_graphic.fill(255, 0, 0); // red color 
+  game_graphic.rect(food.x, food.y, cellDimension, cellDimension);
+}
+
 export {
   printCustomText,
   showScorePanel,
+  showSnake,
+  showFood,
 };

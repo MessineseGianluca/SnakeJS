@@ -13,11 +13,6 @@ function Food() {
   this.y = getRandomPoint(screenHeight, cellDimension);
   this.dim = cellDimension;
 
-  this.show = function(game_graphic) {
-    game_graphic.fill(255, 0, 0); // red color 
-    game_graphic.rect(this.x, this.y, this.dim, this.dim);
-  }
-
   this.update = function() {
     this.x = getRandomPoint(screenWidth, cellDimension);
     this.y = getRandomPoint(screenHeight, cellDimension);

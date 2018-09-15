@@ -7,8 +7,32 @@ import {
 } from './config';
 import { snake } from './snake/snake';
 import { food } from './food/food';
-import { printCustomText, showScorePanel } from './show';
+import { 
+  printCustomText, 
+  showScorePanel, 
+  showSnake, 
+  showFood 
+} from './show';
 import * as game from './game_status';
+
+function setup() {
+  game_graphic.createCanvas(screenWidth, screenHeight);
+  game_graphic.frameRate(frameRate);
+  snake.init();
+}
+
+function draw() {
+  game_graphic.background(0);
+  snake.update();
+  showSnake(game_graphic);
+  showFood(game_graphic);
+  showScorePanel(snake.getLength());
+  checkSnakePosition();
+  checkIfEatenAndUpdate();
+  if(snake.bitesItself()) {
+    endGame();
+  }
+}
 
 function checkIfEatenAndUpdate() {
   if(food.isEaten(snake.getCoordinates())) {
@@ -53,25 +77,6 @@ function endGame() {
   );
 
   game_graphic.noLoop();
-}
-
-function setup() {
-  game_graphic.createCanvas(screenWidth, screenHeight);
-  game_graphic.frameRate(frameRate);
-  snake.init();
-}
-
-function draw() {
-  game_graphic.background(0);
-  snake.update();
-  snake.show(game_graphic);
-  food.show(game_graphic);
-  showScorePanel(snake.getLength());
-  checkSnakePosition();
-  checkIfEatenAndUpdate();
-  if(snake.bitesItself()) {
-    endGame();
-  }
 }
 
 export {
