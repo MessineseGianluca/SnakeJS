@@ -1,5 +1,8 @@
-const { cellDimension } = require('../config');
-const { snakeBlock } = require('./snake_block');
+import { game_graphic } from '../graphic';
+import { cellDimension } from '../config';
+import { snakeBlock } from './snake_block';
+
+let snake = new Snake();
 
 function Snake() {
   this.dim = cellDimension;
@@ -7,7 +10,6 @@ function Snake() {
   this.ySpeed = 0;
   
   this.snakeBlocks = [];
-  this.snakeBlocks.push(new snakeBlock(0, 0));
 
   this.update = function() {
     const tempCoordinates = this.getHeadBlock();
@@ -24,10 +26,10 @@ function Snake() {
     }
   }
 
-  this.show = function(p5) {
+  this.show = function(game_graphic) {
     this.snakeBlocks.forEach(block => {
-      p5.fill(0, 255, 0);
-      p5.rect(block.x, block.y, this.dim, this.dim);
+      game_graphic.fill(0, 255, 0);
+      game_graphic.rect(block.x, block.y, this.dim, this.dim);
     });
   }
 
@@ -111,11 +113,13 @@ function Snake() {
     this.snakeBlocks = [];
   }
 
+  this.init = function() {
+    this.snakeBlocks.push(new snakeBlock(0, 0));
+  }
+
   this.getLength = function() {
     return this.snakeBlocks.length;
   }
 }
 
-module.exports = {
-  Snake,
-}
+export { snake };

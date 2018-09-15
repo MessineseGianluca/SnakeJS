@@ -1,8 +1,9 @@
+import { getRandomPoint } from '../util/util';
+import { screenWidth, screenHeight, cellDimension } from '../config';
+
 function snakeBlock() {
-  this.x = 0;
-  this.y = 0;
+  this.x = getRandomPoint(screenWidth, cellDimension);
+  this.y = getRandomPoint(screenHeight, cellDimension);
 }
 
-module.exports = {
-  snakeBlock,
-}
+export { snakeBlock };
