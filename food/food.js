@@ -18,12 +18,11 @@ function Food() {
     this.y = getRandomPoint(screenHeight, cellDimension);
   }
 
-  this.isEaten = function(snakeCoordinates) {
-    let eaten = false;
-    if(this.x === snakeCoordinates.x && this.y === snakeCoordinates.y) {
-      eaten = !eaten;
-    }
-    return eaten;
+  this.getCoordinates = function() {
+    return {
+      x: this.x,
+      y: this.y,
+    };
   }
 }
 

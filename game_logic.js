@@ -35,10 +35,24 @@ function draw() {
 }
 
 function checkIfEatenAndUpdate() {
-  if(food.isEaten(snake.getCoordinates())) {
+  if(isFoodEaten()) {
     snake.grow();
     food.update();
   }
+}
+
+
+function isFoodEaten() {
+  const snakeCoordinates = snake.getCoordinates();
+  const foodCoordinates = food.getCoordinates();
+  let eaten = false;
+  if(
+    foodCoordinates.x === snakeCoordinates.x && 
+    foodCoordinates.y === snakeCoordinates.y
+  ) {
+    eaten = true;
+  }
+  return eaten;
 }
 
 function checkSnakePosition() {
